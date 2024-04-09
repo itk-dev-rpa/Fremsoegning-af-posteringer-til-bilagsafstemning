@@ -4,7 +4,6 @@ import json
 from dataclasses import dataclass
 from io import BytesIO
 import re
-import os
 
 from OpenOrchestrator.orchestrator_connection.connection import OrchestratorConnection
 from itk_dev_shared_components.graph import authentication as graph_authentication
