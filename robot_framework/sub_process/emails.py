@@ -24,12 +24,28 @@ class Task:
 
 
 def create_graph_access(orchestrator_connection: OrchestratorConnection) -> GraphAccess:
+    """Authenticate against the Graph api.
+
+    Args:
+        orchestrator_connection: The connection to OpenOrchestrator.
+
+    Returns:
+        A GraphAcces object to use for authentication.
+    """
     graph_creds = orchestrator_connection.get_credential(config.GRAPH_API)
     graph_access = graph_authentication.authorize_by_username_password(graph_creds.username, **json.loads(graph_creds.password))
     return graph_access
 
 
 def get_emails(graph_access: GraphAccess) -> tuple[graph_mail.Email, ...]:
+    """Get all relevant emails from Graph.
+
+    Args:
+        graph_access: The graph access object to authenticate with.
+
+    Returns:
+        A tuple of email objects.
+    """
     mails = graph_mail.get_emails_from_folder("itk-rpa@mkb.aarhus.dk", "Indbakke/Bilagsafstemning", graph_access)
     mails = [mail for mail in mails if mail.sender == 'noreply@aarhus.dk' and mail.subject == 'Bilagsafstemning']
 
@@ -67,16 +83,11 @@ def send_rejection(receiver_email: str):
 
 
 def send_result(receiver_email: str, file: BytesIO):
+    """Send the resulting file to the given receiver.
+
+    Args:
+        receiver_email: The email address to send the email to.
+        file: The file to attach to the email.
+    """
     attachment = smtp_util.EmailAttachment(file, "Bilagsafstemning.xlsx")
     smtp_util.send_email(receiver_email, "itk-rpa@mbk.aarhus.dk", "Resultater til bilagsafstemning", "Her er resultatet på din anmodning om fremsøgning af posteringer til bilagsafstemning.\n\nVenlig hilsen\nRobotten", config.SMTP_SERVER, config.SMTP_PORT, attachments=(attachment,))
-
-
-if __name__ == '__main__':
-    conn_string = os.getenv("OpenOrchestratorConnString")
-    crypto_key = os.getenv("OpenOrchestratorKey")
-    oc = OrchestratorConnection("Bilag test", conn_string, crypto_key, "")
-
-    graph_access = create_graph_access(oc)
-    mails = get_emails(graph_access)
-    task = get_email_data(mails[0], graph_access)
-    print(task)
