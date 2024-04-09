@@ -1,3 +1,4 @@
+"""This module is responsible for reading text files generated in OPUS Sap."""
 
 from io import StringIO
 from typing import Literal
@@ -5,6 +6,19 @@ import locale
 
 
 def find_info(file_path: str, amount: float, iart: Literal["NETT", "BRUT", "KYTB"]) -> tuple[tuple[str, str, float], ...]:
+    """Find the relevant info given a text file, monetary amount and iart.
+
+    Args:
+        file_path: The path of the text file.
+        amount: The monetary amount to search for.
+        iart: The iart of the bilag.
+
+    Raises:
+        RuntimeError: If no information could be found on the given search criteria.
+
+    Returns:
+        A tuple of tuples of fp, aftale and amount of the relevant posteringer.
+    """
     amount_str = format_currency(amount)
 
     with open(file_path, encoding="ANSI") as file:
@@ -12,6 +26,7 @@ def find_info(file_path: str, amount: float, iart: Literal["NETT", "BRUT", "KYTB
         for _ in range(4):
             file.readline()
 
+        # Search for the relevant info
         for line in file:
             if line.split("\t")[15].strip() == amount_str:
                 info = parse_posteringer(file, iart)
@@ -24,6 +39,16 @@ def find_info(file_path: str, amount: float, iart: Literal["NETT", "BRUT", "KYTB
 
 
 def parse_posteringer(file: StringIO, iart: str) -> tuple[str, str, float]:
+    """Given a text file which is already pointing at the correct line
+    parse the values on the following lines and stop at the next blank line.
+
+    Args:
+        file: A StringIO text file thats pointing at the correct line.
+        iart: The iart of the bilag.
+
+    Returns:
+        A tuple of tuples of fp, aftale and amount of the relevant posteringer.
+    """
     info = []
 
     for line in file:
@@ -79,9 +104,3 @@ def parse_currency(amount: str) -> float:
     amount = amount.replace(".", "")
     amount = amount.replace(",", ".")
     return float(amount)
-
-
-if __name__ == '__main__':
-    path = r"C:\Repos\Fremsoegning-af-posteringer-til-bilagsafstemning\a85d89b7-97e9-4cdf-b91d-a9d168fe2639.txt"
-    res = find_info(path, "8.540,00-", "NETT")
-    print(res)
