@@ -64,6 +64,7 @@ def get_first_and_last_date(bilag_list: list[Bilag]) -> tuple[datetime, datetime
 
 def get_next_task(graph_access: GraphAccess, orchestrator_connection: OrchestratorConnection) -> tuple[emails.Task, graph_mail.Email]:
     """Get the next email in the task queue.
+    Reject and delete any non-valid emails.
 
     Args:
         graph_access: The graph access object to authenticate with.
