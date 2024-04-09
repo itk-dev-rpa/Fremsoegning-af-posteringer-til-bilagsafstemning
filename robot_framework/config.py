@@ -14,4 +14,3 @@ SCREENSHOT_SENDER = "robot@friend.dk"
 # Constant/Credential names
 ERROR_EMAIL = "Error Email"
 GRAPH_API = "Graph API"
-
