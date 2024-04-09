@@ -16,6 +16,7 @@ from robot_framework import config
 
 @dataclass(kw_only=True)
 class Task:
+    """A dataclass representing a task."""
     receiver_email: str
     receiver_ident: str
     iart: str
