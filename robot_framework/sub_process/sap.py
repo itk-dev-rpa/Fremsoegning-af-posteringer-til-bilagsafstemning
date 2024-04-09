@@ -1,3 +1,4 @@
+"""This module is responsible for actions performed in OPUS Sap."""
 
 import os
 from datetime import datetime
@@ -46,6 +47,21 @@ def open_zfir(session, date_from: datetime, date_to: datetime, iart: Literal["NE
 
 
 def find_posteringer(session, date: datetime, bilagsnummer: str, amount: float, iart: str) -> tuple[tuple[str, str, float], ...]:
+    """Find posteringer on the given bilag using the given search criteria.
+
+    Args:
+        session: The SAP session object to perform the actions.
+        date: The date of the bilag.
+        bilagsnummer: The id number of the bilag.
+        amount: The monetary amount of the bilag.
+        iart: The iart of the bilag.
+
+    Raises:
+        ValueError: If no bilag was found on the given search criteria.
+
+    Returns:
+        A tuple of tuples of fp, aftale and amount of the relevant posteringer.
+    """
     row = find_bilag_row(session, date, bilagsnummer, amount)
     if row == -1:
         raise ValueError(f"No row matching input found: {date}, {bilagsnummer}, {amount}")
@@ -62,6 +78,15 @@ def find_posteringer(session, date: datetime, bilagsnummer: str, amount: float, 
 
 
 def export_row_details(session, row: int) -> str:
+    """Export the details of a bilag on the given table row index.
+
+    Args:
+        session: The Sap session object to perform the action.
+        row: The index of the bilag in the table to export the details of.
+
+    Returns:
+        The file path of the exported text file.
+    """
     dir_name = os.getcwd()
     file_name = f"{uuid.uuid4()}.txt"
 
