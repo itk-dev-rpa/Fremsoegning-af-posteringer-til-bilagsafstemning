@@ -79,7 +79,7 @@ def send_rejection(receiver_email: str):
     Args:
         receiver_email: The email address of the receiver.
     """
-    smtp_util.send_email(receiver_email, "itk-rpa@mkb.aarhus.dk", "Bilagsafstemning: Anmodning afvist", "Den angivne az-ident er ikke på listen over godkendte brugere, og anmodningen er derfor blevet afvist.", config.SMTP_SERVER, config.SMTP_PORT)
+    smtp_util.send_email(receiver_email, "itk-rpa@mkb.aarhus.dk", "Bilagsafstemning: Anmodning afvist", "Den angivne az-ident er ikke på listen over godkendte brugere, og anmodningen er derfor blevet afvist.\n\nVenlig hilsen\nRobotten", config.SMTP_SERVER, config.SMTP_PORT)
 
 
 def send_result(receiver_email: str, file: BytesIO):

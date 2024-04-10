@@ -75,6 +75,11 @@ def get_next_task(graph_access: GraphAccess, orchestrator_connection: Orchestrat
     whitelist = orchestrator_connection.process_arguments.split(";")
     mails = emails.get_emails(graph_access)
 
+    orchestrator_connection.log_info(f"Emails in folder: {len(mails)}")
+
+    # Sort emails from oldest to newest
+    mails = sorted(mails, key=lambda m: datetime.fromisoformat(m.received_time))
+
     task = None
     mail = None
 
