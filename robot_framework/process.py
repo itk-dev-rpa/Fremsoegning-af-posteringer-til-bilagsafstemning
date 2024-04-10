@@ -103,5 +103,5 @@ def get_next_task(graph_access: GraphAccess, orchestrator_connection: Orchestrat
 if __name__ == '__main__':
     conn_string = os.getenv("OpenOrchestratorConnString")
     crypto_key = os.getenv("OpenOrchestratorKey")
-    oc = OrchestratorConnection("Bilag test", conn_string, crypto_key, "az68933")
+    oc = OrchestratorConnection("Bilag test", conn_string, crypto_key, "")
     process(oc)
