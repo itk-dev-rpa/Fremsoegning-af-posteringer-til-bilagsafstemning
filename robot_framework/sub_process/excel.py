@@ -57,11 +57,13 @@ def read_excel(file: BytesIO) -> tuple[Bilag, ...]:
 
 
 def write_excel(bilag_list: tuple[Bilag, ...], data_list: tuple[tuple[tuple[str, str, float], ...], ...]):
-    """SUM, TEKST, AI, BLANK, Bilagsart, Bilagsnummer, FP, Dato, Beløb
+    """Write the given bilag list and data list to an Excel sheet.
+    The columns are in the following order:
+    SUM, TEKST, Aftale, BLANK, Bilagsart, Bilagsnummer, FP, Dato, Beløb
 
     Args:
-        bilag_list: _description_
-        data_list: _description_
+        bilag_list: The list of bilag to write.
+        data_list: A list of bilagsdata the same length as the bilag_list.
     """
     wb = Workbook()
     sheet: Worksheet = wb.active
