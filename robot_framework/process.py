@@ -46,6 +46,8 @@ def process(orchestrator_connection: OrchestratorConnection) -> None:
     emails.send_result(task.receiver_email, result_file)
     graph_mail.delete_email(mail, graph_access)
 
+    orchestrator_connection.log_info(f"Result email sent to {task.receiver_email} with {len(data_list)} results.")
+
 
 def get_first_and_last_date(bilag_list: list[Bilag]) -> tuple[datetime, datetime]:
     """Get the first and last date of the given bilag list.
