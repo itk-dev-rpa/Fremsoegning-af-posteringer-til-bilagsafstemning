@@ -14,4 +14,4 @@ SCREENSHOT_SENDER = "robot@friend.dk"
 # Constant/Credential names
 ERROR_EMAIL = "Error Email"
 GRAPH_API = "Graph API"
-SAP_LOGIN = "azrpa53"
+SAP_LOGIN = "SAP Bilagafstemning"
