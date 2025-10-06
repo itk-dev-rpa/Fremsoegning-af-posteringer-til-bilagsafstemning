@@ -7,6 +7,7 @@ from OpenOrchestrator.orchestrator_connection.connection import OrchestratorConn
 from itk_dev_shared_components.sap import multi_session
 from itk_dev_shared_components.graph import mail as graph_mail
 from itk_dev_shared_components.graph.authentication import GraphAccess
+import itk_dev_event_log
 
 from robot_framework.sub_process import sap, excel, emails
 from robot_framework.sub_process.excel import Bilag
@@ -15,6 +16,9 @@ from robot_framework.sub_process.excel import Bilag
 def process(orchestrator_connection: OrchestratorConnection) -> None:
     """Do the primary process of the robot."""
     orchestrator_connection.log_trace("Running process.")
+
+    event_log = orchestrator_connection.get_constant("Event Log")
+    itk_dev_event_log.setup_logging(event_log.value)
 
     graph_access = emails.create_graph_access(orchestrator_connection)
 
@@ -45,6 +49,8 @@ def process(orchestrator_connection: OrchestratorConnection) -> None:
     result_file = excel.write_excel(bilag_list, data_list)
     emails.send_result(task.receiver_email, result_file)
     graph_mail.delete_email(mail, graph_access)
+
+    itk_dev_event_log.emit(orchestrator_connection.process_name, "Sent posts", len(data_list))
 
     orchestrator_connection.log_info(f"Result email sent to {task.receiver_email} with {len(data_list)} results.")
 
