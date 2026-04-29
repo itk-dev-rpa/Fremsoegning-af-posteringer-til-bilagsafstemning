@@ -1,6 +1,5 @@
 """This module contains the main process of the robot."""
 
-import os
 from datetime import datetime
 
 from OpenOrchestrator.orchestrator_connection.connection import OrchestratorConnection
@@ -104,10 +103,3 @@ def get_next_task(graph_access: GraphAccess, orchestrator_connection: Orchestrat
             break
 
     return task, mail
-
-
-if __name__ == '__main__':
-    conn_string = os.getenv("OpenOrchestratorConnString")
-    crypto_key = os.getenv("OpenOrchestratorKey")
-    oc = OrchestratorConnection("Bilag test", conn_string, crypto_key, "")
-    process(oc)
